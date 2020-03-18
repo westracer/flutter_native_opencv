@@ -1,0 +1,26 @@
+name: flutter_opencv_example
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  # Dart FFI requires 2.6.0
+  sdk: ">=2.6.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  native_opencv:
+    path: native_opencv
+  ffi: ^0.1.3
+  image_picker: ^0.6.3+4
+  path_provider: ^1.6.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
