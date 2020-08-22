@@ -44,7 +44,7 @@ extern "C" {
         vector<Vec4i> hierarchy;
         
         // Doing a lot of work
-        // for (int i = 0; i < 100; i++) {
+        // for (int i = 0; i < 10; i++) {
         //     adaptiveThreshold(input, threshed, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 77, 6);
         //     findContours(threshed, contours, hierarchy, RETR_TREE, CHAIN_APPROX_TC89_L1);
         // }
