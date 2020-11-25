@@ -6,6 +6,6 @@ Read the full article here: https://medium.com/flutter-community/integrating-c-l
 # How to build & run
 1. Download OpenCV for Android and iOS: https://opencv.org/releases/
 2. Copy or create symlinks:
-   - *opencv2.framework* to *native_opencv/ios*
-   - *OpenCV-android-sdk/sdk/native/jni/include* to *native_opencv*
-   - Contents of _OpenCV-android-sdk/sdk/native/jni/libs/**_ to *native_opencv/android/src/main/jniLibs*
+   - `opencv2.framework` to `native_opencv/ios`
+   - `OpenCV-android-sdk/sdk/native/jni/include` to `native_opencv`
+   - Contents of `OpenCV-android-sdk/sdk/native/libs/**` to `native_opencv/android/src/main/jniLibs/**`

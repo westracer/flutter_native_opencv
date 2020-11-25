@@ -43,11 +43,8 @@ extern "C" {
         vector<vector<Point>> contours;
         vector<Vec4i> hierarchy;
         
-        // Doing a lot of work
-        // for (int i = 0; i < 10; i++) {
-        //     adaptiveThreshold(input, threshed, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 77, 6);
-        //     findContours(threshed, contours, hierarchy, RETR_TREE, CHAIN_APPROX_TC89_L1);
-        // }
+        adaptiveThreshold(input, threshed, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 77, 6);
+        findContours(threshed, contours, hierarchy, RETR_TREE, CHAIN_APPROX_TC89_L1);
         
         cvtColor(threshed, withContours, COLOR_GRAY2BGR);
         drawContours(withContours, contours, -1, Scalar(0, 255, 0), 4);
