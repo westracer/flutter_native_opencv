@@ -24,11 +24,11 @@ final _ProcessImageFunc _processImage = _lib
   .asFunction();
 
 String opencvVersion() {
-  return Utf8.fromUtf8(_version());
+  return _version().toDartString();
 }
 
 void processImage(ProcessImageArguments args) {
-  _processImage(Utf8.toUtf8(args.inputPath), Utf8.toUtf8(args.outputPath));
+  _processImage(args.inputPath.toNativeUtf8(), args.outputPath.toNativeUtf8());
 }
 
 class ProcessImageArguments {

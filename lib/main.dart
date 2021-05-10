@@ -9,13 +9,14 @@ import 'package:path_provider/path_provider.dart';
 
 const title = 'Native OpenCV Example';
 
-Directory tempDir;
+late Directory tempDir;
+
 String get tempPath => '${tempDir.path}/temp.jpg';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   getTemporaryDirectory().then((dir) => tempDir = dir);
-  
+
   runApp(MyApp());
 }
 
@@ -41,15 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _isProcessed = false;
   bool _isWorking = false;
 
-  void showVersion(BuildContext context) {
-    final scaffoldState = Scaffold.of(context);
-    final snackbar = SnackBar(content: Text('OpenCV version: ${opencvVersion()}'));
-
-    scaffoldState..removeCurrentSnackBar(reason: SnackBarClosedReason.dismiss)..showSnackBar(snackbar);
-  }
-
   Future<void> takeImageAndProcess() async {
-    final image = await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    final _picker = ImagePicker();
+    PickedFile? image =
+        await _picker.getImage(source: ImageSource.gallery, imageQuality: 100);
+
     if (image == null) {
       return;
     }
@@ -57,23 +54,19 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _isWorking = true;
     });
-    
+
     // Creating a port for communication with isolate and arguments for entry point
     final port = ReceivePort();
     final args = ProcessImageArguments(image.path, tempPath);
-    
+
     // Spawning an isolate
-    Isolate.spawn<ProcessImageArguments>(
-      processImage, 
-      args, 
-      onError: port.sendPort, 
-      onExit: port.sendPort
-    );
+    Isolate.spawn<ProcessImageArguments>(processImage, args,
+        onError: port.sendPort, onExit: port.sendPort);
 
     // Making a variable to store a subscription in
-    StreamSubscription sub;
+    StreamSubscription? sub;
 
-    // Listeting for messages on port
+    // Listening for messages on port
     sub = port.listen((_) async {
       // Cancel a subscription after message received called
       await sub?.cancel();
@@ -88,9 +81,21 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title)
-      ),
+      appBar: AppBar(title: Text(title), actions: <Widget>[
+        IconButton(
+            icon: Icon(Icons.help),
+            onPressed: () => showAboutDialog(
+                context: context,
+                applicationName: title,
+                applicationLegalese: 'OpenCV version: ${opencvVersion()}')),
+      ]),
+      floatingActionButton: _isWorking
+          ? null
+          : FloatingActionButton(
+              // isExtended: true,
+              child: Icon(Icons.folder_open),
+              onPressed: takeImageAndProcess,
+            ),
       body: Stack(
         children: <Widget>[
           Center(
@@ -105,30 +110,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       alignment: Alignment.center,
                     ),
                   ),
-                Builder(
-                  builder: (context) {
-                    return RaisedButton(
-                      child: Text('Show version'),
-                      onPressed: () => showVersion(context)
-                    );
-                  }
-                ),
-                RaisedButton(
-                  child: Text('Process photo'),
-                  onPressed: takeImageAndProcess
-                )
               ],
             ),
           ),
           if (_isWorking)
             Positioned.fill(
-              child: Container(
-                color: Colors.black.withOpacity(.7),
-                child: Center(
-                  child: CircularProgressIndicator()
-                ),
-              )
-            ),
+                child: Container(
+              color: Colors.black.withOpacity(.7),
+              child: Center(child: CircularProgressIndicator()),
+            )),
         ],
       ),
     );
