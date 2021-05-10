@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.help),
             onPressed: () => showAboutDialog(
                 context: context,
-                applicationName: 'Flutter OpenCV Example',
+                applicationName: title,
                 applicationLegalese: 'OpenCV version: ${opencvVersion()}')),
       ]),
       floatingActionButton: _isWorking
