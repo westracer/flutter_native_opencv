@@ -1,6 +1,6 @@
 name: flutter_opencv_example
 description: Demonstrate how to Interact with openCV from Flutter
-
+publish_to: none
 version: 1.0.0+1
 
 environment:
