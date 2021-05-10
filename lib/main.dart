@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 const title = 'Native OpenCV Example';
 
-Directory tempDir;
+late Directory tempDir;
 String get tempPath => '${tempDir.path}/temp.jpg';
 
 void main() {
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> takeImageAndProcess() async {
     final _picker = ImagePicker();
-    PickedFile image = await _picker.getImage(source: ImageSource.gallery, imageQuality: 100);
+    PickedFile? image = await _picker.getImage(source: ImageSource.gallery, imageQuality: 100);
 
     if (image == null) {
       return;
@@ -73,9 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     // Making a variable to store a subscription in
-    StreamSubscription sub;
+    StreamSubscription? sub;
 
-    // Listeting for messages on port
+    // Listening for messages on port
     sub = port.listen((_) async {
       // Cancel a subscription after message received called
       await sub?.cancel();
@@ -109,13 +109,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 Builder(
                   builder: (context) {
-                    return RaisedButton(
+                    return ElevatedButton(
                       child: Text('Show version'),
                       onPressed: () => showVersion(context)
                     );
                   }
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('Process photo'),
                   onPressed: takeImageAndProcess
                 )
