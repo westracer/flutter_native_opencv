@@ -39,13 +39,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _picker = ImagePicker();
+
   bool _isProcessed = false;
   bool _isWorking = false;
 
+  void showVersion() {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final snackbar = SnackBar(
+      content: Text('OpenCV version: ${opencvVersion()}'),
+    );
+
+    scaffoldMessenger
+      ..removeCurrentSnackBar(reason: SnackBarClosedReason.dismiss)
+      ..showSnackBar(snackbar);
+  }
+
   Future<void> takeImageAndProcess() async {
-    final _picker = ImagePicker();
-    PickedFile? image =
-        await _picker.getImage(source: ImageSource.gallery, imageQuality: 100);
+    final image = await _picker.getImage(
+      source: ImageSource.gallery,
+      imageQuality: 100,
+    );
 
     if (image == null) {
       return;
@@ -60,16 +74,20 @@ class _MyHomePageState extends State<MyHomePage> {
     final args = ProcessImageArguments(image.path, tempPath);
 
     // Spawning an isolate
-    Isolate.spawn<ProcessImageArguments>(processImage, args,
-        onError: port.sendPort, onExit: port.sendPort);
+    Isolate.spawn<ProcessImageArguments>(
+      processImage,
+      args,
+      onError: port.sendPort,
+      onExit: port.sendPort,
+    );
 
     // Making a variable to store a subscription in
-    StreamSubscription? sub;
+    late StreamSubscription sub;
 
     // Listening for messages on port
     sub = port.listen((_) async {
       // Cancel a subscription after message received called
-      await sub?.cancel();
+      await sub.cancel();
 
       setState(() {
         _isProcessed = true;
@@ -81,21 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title), actions: <Widget>[
-        IconButton(
-            icon: Icon(Icons.help),
-            onPressed: () => showAboutDialog(
-                context: context,
-                applicationName: title,
-                applicationLegalese: 'OpenCV version: ${opencvVersion()}')),
-      ]),
-      floatingActionButton: _isWorking
-          ? null
-          : FloatingActionButton(
-              // isExtended: true,
-              child: Icon(Icons.folder_open),
-              onPressed: takeImageAndProcess,
-            ),
+      appBar: AppBar(title: Text(title)),
       body: Stack(
         children: <Widget>[
           Center(
@@ -110,15 +114,30 @@ class _MyHomePageState extends State<MyHomePage> {
                       alignment: Alignment.center,
                     ),
                   ),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      child: Text('Show version'),
+                      onPressed: showVersion,
+                    ),
+                    ElevatedButton(
+                      child: Text('Process photo'),
+                      onPressed: takeImageAndProcess,
+                    ),
+                  ],
+                )
               ],
             ),
           ),
           if (_isWorking)
             Positioned.fill(
-                child: Container(
-              color: Colors.black.withOpacity(.7),
-              child: Center(child: CircularProgressIndicator()),
-            )),
+              child: Container(
+                color: Colors.black.withOpacity(.7),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ),
         ],
       ),
     );

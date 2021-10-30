@@ -1,5 +1,5 @@
 name: flutter_opencv_example
-description: Demonstrate how to Interact with openCV from Flutter
+description: An example of using OpenCV natively in C++ in a Flutter app with Dart FFI
 publish_to: none
 version: 1.0.0+1
 
@@ -13,9 +13,9 @@ dependencies:
   cupertino_icons: ^0.1.2
   native_opencv:
     path: native_opencv
-  ffi: ^1.0.0
-  image_picker: ^0.7.4
-  path_provider: ^2.0.1
+  ffi: ^1.1.2
+  image_picker: ^0.8.4+4
+  path_provider: ^2.0.6
 
 dev_dependencies:
   flutter_test:
