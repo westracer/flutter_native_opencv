@@ -9,13 +9,14 @@ import 'package:path_provider/path_provider.dart';
 
 const title = 'Native OpenCV Example';
 
-Directory tempDir;
+late Directory tempDir;
+
 String get tempPath => '${tempDir.path}/temp.jpg';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   getTemporaryDirectory().then((dir) => tempDir = dir);
-  
+
   runApp(MyApp());
 }
 
@@ -38,18 +39,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _picker = ImagePicker();
+
   bool _isProcessed = false;
   bool _isWorking = false;
 
-  void showVersion(BuildContext context) {
-    final scaffoldState = Scaffold.of(context);
-    final snackbar = SnackBar(content: Text('OpenCV version: ${opencvVersion()}'));
+  void showVersion() {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final snackbar = SnackBar(
+      content: Text('OpenCV version: ${opencvVersion()}'),
+    );
 
-    scaffoldState..removeCurrentSnackBar(reason: SnackBarClosedReason.dismiss)..showSnackBar(snackbar);
+    scaffoldMessenger
+      ..removeCurrentSnackBar(reason: SnackBarClosedReason.dismiss)
+      ..showSnackBar(snackbar);
   }
 
   Future<void> takeImageAndProcess() async {
-    final image = await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    final image = await _picker.getImage(
+      source: ImageSource.gallery,
+      imageQuality: 100,
+    );
+
     if (image == null) {
       return;
     }
@@ -57,26 +68,26 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _isWorking = true;
     });
-    
+
     // Creating a port for communication with isolate and arguments for entry point
     final port = ReceivePort();
     final args = ProcessImageArguments(image.path, tempPath);
-    
+
     // Spawning an isolate
     Isolate.spawn<ProcessImageArguments>(
-      processImage, 
-      args, 
-      onError: port.sendPort, 
-      onExit: port.sendPort
+      processImage,
+      args,
+      onError: port.sendPort,
+      onExit: port.sendPort,
     );
 
     // Making a variable to store a subscription in
-    StreamSubscription sub;
+    late StreamSubscription sub;
 
-    // Listeting for messages on port
+    // Listening for messages on port
     sub = port.listen((_) async {
       // Cancel a subscription after message received called
-      await sub?.cancel();
+      await sub.cancel();
 
       setState(() {
         _isProcessed = true;
@@ -88,9 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title)
-      ),
+      appBar: AppBar(title: Text(title)),
       body: Stack(
         children: <Widget>[
           Center(
@@ -105,17 +114,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       alignment: Alignment.center,
                     ),
                   ),
-                Builder(
-                  builder: (context) {
-                    return RaisedButton(
+                Column(
+                  children: [
+                    ElevatedButton(
                       child: Text('Show version'),
-                      onPressed: () => showVersion(context)
-                    );
-                  }
-                ),
-                RaisedButton(
-                  child: Text('Process photo'),
-                  onPressed: takeImageAndProcess
+                      onPressed: showVersion,
+                    ),
+                    ElevatedButton(
+                      child: Text('Process photo'),
+                      onPressed: takeImageAndProcess,
+                    ),
+                  ],
                 )
               ],
             ),
@@ -125,9 +134,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 color: Colors.black.withOpacity(.7),
                 child: Center(
-                  child: CircularProgressIndicator()
+                  child: CircularProgressIndicator(),
                 ),
-              )
+              ),
             ),
         ],
       ),
