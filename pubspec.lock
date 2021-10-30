@@ -163,6 +163,27 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  native_opencv_linux:
+    dependency: transitive
+    description:
+      path: native_opencv_linux
+      relative: true
+    source: path
+    version: "0.0.1"
+  native_opencv_macos:
+    dependency: transitive
+    description:
+      path: native_opencv_macos
+      relative: true
+    source: path
+    version: "0.0.1"
+  native_opencv_windows:
+    dependency: transitive
+    description:
+      path: native_opencv_windows
+      relative: true
+    source: path
+    version: "0.0.1"
   path:
     dependency: transitive
     description:

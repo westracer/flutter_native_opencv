@@ -55,11 +55,25 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_lints:
+    dependency: "direct dev"
+    description:
+      name: flutter_lints
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   matcher:
     dependency: transitive
     description:
@@ -74,27 +88,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
-  native_opencv_linux:
-    dependency: "direct main"
-    description:
-      path: "../native_opencv_linux"
-      relative: true
-    source: path
-    version: "0.0.1"
-  native_opencv_macos:
-    dependency: "direct main"
-    description:
-      path: "../native_opencv_macos"
-      relative: true
-    source: path
-    version: "0.0.1"
-  native_opencv_windows:
-    dependency: "direct main"
-    description:
-      path: "../native_opencv_windows"
-      relative: true
-    source: path
-    version: "0.0.1"
   path:
     dependency: transitive
     description:
