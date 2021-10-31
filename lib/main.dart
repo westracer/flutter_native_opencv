@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> takeImageAndProcess() async {
-    final image = await _picker.getImage(
+    final image = await _picker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 100,
     );
