@@ -22,6 +22,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Access to camera is required</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access to photo library is required</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,9 +45,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>Access to camera is required</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Access to photo library is required</string>
 </dict>
 </plist>
