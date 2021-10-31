@@ -14,9 +14,17 @@ typedef _VersionFunc = ffi.Pointer<Utf8> Function();
 typedef _ProcessImageFunc = void Function(ffi.Pointer<Utf8>, ffi.Pointer<Utf8>);
 
 // Getting a library that holds needed symbols
-ffi.DynamicLibrary _lib = Platform.isAndroid
-    ? ffi.DynamicLibrary.open('libnative_opencv.so')
-    : ffi.DynamicLibrary.process();
+ffi.DynamicLibrary _openDynamicLibrary() {
+  if (Platform.isAndroid) {
+    return ffi.DynamicLibrary.open('libnative_opencv.so');
+  } else if (Platform.isWindows) {
+    return ffi.DynamicLibrary.open("native_opencv_windows_plugin.dll");
+  }
+
+  return ffi.DynamicLibrary.process();
+}
+
+ffi.DynamicLibrary _lib = _openDynamicLibrary();
 
 // Looking for the functions
 final _VersionFunc _version =

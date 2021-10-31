@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_opencv_example/native_opencv.dart';
 import 'package:image_picker/image_picker.dart';
@@ -55,13 +56,29 @@ class _MyHomePageState extends State<MyHomePage> {
       ..showSnackBar(snackbar);
   }
 
-  Future<void> takeImageAndProcess() async {
-    final image = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 100,
-    );
+  Future<String?> pickAnImage() async {
+    if (Platform.isIOS || Platform.isAndroid) {
+      return _picker
+          .pickImage(
+            source: ImageSource.gallery,
+            imageQuality: 100,
+          )
+          .then((v) => v?.path);
+    } else {
+      return FilePicker.platform
+          .pickFiles(
+            dialogTitle: 'Pick an image',
+            type: FileType.image,
+            allowMultiple: false,
+          )
+          .then((v) => v?.files.first.path);
+    }
+  }
 
-    if (image == null) {
+  Future<void> takeImageAndProcess() async {
+    final imagePath = await pickAnImage();
+
+    if (imagePath == null) {
       return;
     }
 
@@ -71,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Creating a port for communication with isolate and arguments for entry point
     final port = ReceivePort();
-    final args = ProcessImageArguments(image.path, tempPath);
+    final args = ProcessImageArguments(imagePath, tempPath);
 
     // Spawning an isolate
     Isolate.spawn<ProcessImageArguments>(

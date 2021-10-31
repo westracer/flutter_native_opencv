@@ -5,6 +5,8 @@ Read the full article here: https://medium.com/flutter-community/integrating-c-l
 
 # How to build & run
 
+## Android and iOS
+
 Run `init.sh` script from a `scripts` folder or do the following steps manually:
 
 1. Download OpenCV for Android and iOS: https://opencv.org/releases/
@@ -12,6 +14,15 @@ Run `init.sh` script from a `scripts` folder or do the following steps manually:
    - `opencv2.framework` to `native_opencv/ios`
    - `OpenCV-android-sdk/sdk/native/jni/include` to `native_opencv`
    - Contents of `OpenCV-android-sdk/sdk/native/libs/**` to `native_opencv/android/src/main/jniLibs/**`
+
+## Windows
+
+Run `init_windows.ps1` PowerShell script from a `scripts` folder or do the following steps manually:
+
+1. Download OpenCV for Windows: https://opencv.org/releases/
+2. Unpack it. Set env. variable `OpenCV_DIR` to unpacked `...\opencv\build` folder
+3. Create a hard link from `native_opencv\ios\Classes\native_opencv.cpp` to `native_opencv_windows\windows\native_opencv.cpp`
+4. Make sure `native_opencv_windows\windows\CMakeLists.txt` contains correct .dll names (OpenCV_DEBUG_DLL_NAME,OpenCV_RELEASE_DLL_NAME)
 
 # Troubleshooting
 
