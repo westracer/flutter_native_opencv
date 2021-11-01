@@ -1,7 +1,9 @@
 #include <opencv2/opencv.hpp>
 #include <chrono>
 
-#define IS_WIN32 defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32)
+#define IS_WIN32
+#endif
 
 #ifdef __ANDROID__
 #include <android/log.h>

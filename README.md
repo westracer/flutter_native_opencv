@@ -24,6 +24,18 @@ Run `init_windows.ps1` PowerShell script from a `scripts` folder or do the follo
 3. Create a hard link from `native_opencv\ios\Classes\native_opencv.cpp` to `native_opencv_windows\windows\native_opencv.cpp`
 4. Make sure `native_opencv_windows\windows\CMakeLists.txt` contains correct .dll names (OpenCV_DEBUG_DLL_NAME,OpenCV_RELEASE_DLL_NAME)
 
+## macOS
+
+Before doing anything else, you need to download OpenCV source code and 
+build a framework by running `opencv/platforms/apple/build_xcframework.py` script.
+
+Run `init_macos.sh` script from a `scripts` folder or do the following steps manually:
+
+1. Download OpenCV source code: https://opencv.org/releases/
+2. Unpack it. Build a framework by running opencv/platforms/apple/build_xcframework.py
+3. Create a hard link from `native_opencv/ios/Classes/native_opencv.cpp` to `native_opencv_macos/macos/Classes/native_opencv.cpp`
+4. Copy `opencv2.xcframework` to `native_opencv/macos`
+
 # Troubleshooting
 
 ```

@@ -5,3 +5,6 @@
 .pub/
 
 build/
+
+/macos/opencv2.xcframework
+/macos/Classes/native_opencv.cpp
