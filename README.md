@@ -36,6 +36,17 @@ Run `init_macos.sh` script from a `scripts` folder or do the following steps man
 3. Create a hard link from `native_opencv/ios/Classes/native_opencv.cpp` to `native_opencv_macos/macos/Classes/native_opencv.cpp`
 4. Copy `opencv2.xcframework` to `native_opencv/macos`
 
+## Linux
+
+Before doing anything else, you need to download OpenCV source code and
+build libraries by following [the official tutorial](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html).
+
+After making a build, set up an environmental variable `OpenCV_DIR` to the build's folder.
+
+Run `init_linux.sh` script from a `scripts` folder or do the following steps manually:
+
+1. Create a hard link from `native_opencv/ios/Classes/native_opencv.cpp` to `native_opencv_linux/linux/native_opencv.cpp`
+
 # Troubleshooting
 
 ```
@@ -44,6 +55,12 @@ Run `init_macos.sh` script from a `scripts` folder or do the following steps man
             ^~~~~~~~~~~~~~~~
   1 error generated.
   ninja: build stopped: subcommand failed.
+```
+or
+```
+/snap/flutter/current/usr/bin/ld: warning: /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crt1.o: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0008002
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+Exception: Build process failed
 ```
 
 Install flutter manually instead of from snap, see: https://flutter.dev/docs/get-started/install/linux#install-flutter-manually
