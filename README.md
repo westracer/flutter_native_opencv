@@ -1,7 +1,10 @@
 # flutter_native_opencv
 Using OpenCV natively in C++ in a Flutter app with Dart FFI. Tested with Flutter 2.5.2.
 
-Read the full article here: https://medium.com/flutter-community/integrating-c-library-in-a-flutter-app-using-dart-ffi-38a15e16bc14
+Read the full articles:
+
+- Mobile platorms: https://medium.com/flutter-community/integrating-c-library-in-a-flutter-app-using-dart-ffi-38a15e16bc14
+- Desktop platorms: https://medium.com/flutter-community/integrating-c-library-in-a-desktop-flutter-app-using-dart-ffi-32560cb1169b
 
 # How to build & run
 
